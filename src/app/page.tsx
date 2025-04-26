@@ -8,6 +8,8 @@ import { z } from "zod";
 import loginSchema from "@/src/schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
+import { redirect } from "next/navigation";
+import Logo from "../components/logo";
 
 export default function Login() {
 
@@ -20,13 +22,13 @@ export default function Login() {
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    console.log(values);
+    redirect("/home");
   }
 
   return (
     <section className="p-5 flex flex-col justify-center h-screen">
       <div className="flex justify-center">
-        <Image width={240} height={240} src="/logo.png" alt="" />
+        <Logo width={240} height={240} />
       </div>
       <div className="w-full h-[calc(80%-75px)] flex items-center">
         <Form {...form}>
