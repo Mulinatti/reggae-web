@@ -52,6 +52,18 @@ export default function Cadastro() {
                 <FormMessage />
               </FormItem>
             )} />
+            
+            {/* Nada feito ainda. Conferir posteriormente sobre como fazer isso. */}
+            <FormField name="password2" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+
             <Button size="lg" className="w-full mt-1.5 font-semibold" type="submit">Cadastro</Button>
           </form>
         </Form>
