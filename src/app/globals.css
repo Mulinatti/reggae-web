@@ -128,4 +128,11 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .neumorphism {
+    border-radius: 50%;
+    background: #fbfcf9;
+    box-shadow:  10px 10px 30px #d5d6d4,
+             -10px -10px 30px #ffffff;
+  }
 }
