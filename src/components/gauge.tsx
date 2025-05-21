@@ -19,14 +19,14 @@ const gauge = {
 		style: "temperature",
 		indicator: "°"
 	}
-} as const;
+};
 
 const Gauge = ({maxGaugeValue, gaugeValue, gaugeType = "temperature"}: GaugeProps) => {
 	
 	const gaugeRotation = (gaugeValue / maxGaugeValue) * 360 - 180;
 
 	return (
-		<div className="neumorphism w-28 h-28 flex justify-center items-center relative">
+		<div className="neumorphism -z-10 w-28 h-28 flex justify-center items-center relative">
 			<div className={cn("w-24 h-24 rounded-full flex justify-center items-center", gauge[gaugeType].style)}>
 				<div className="w-20 h-20 bg-background rounded-full flex justify-center items-center">
 					<p className="font-bold text-xl ml-1">{gaugeValue}{gauge[gaugeType].indicator}</p>
