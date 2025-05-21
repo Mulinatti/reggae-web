@@ -135,4 +135,12 @@
     box-shadow:  10px 10px 30px #d5d6d4,
              -10px -10px 30px #ffffff;
   }
+
+  .humidity {
+    @apply bg-gradient-to-r from-blue-300 to-blue-900;
+  }
+
+  .temperature {
+    @apply bg-gradient-to-br from-blue-800 to-red-900;
+  }
 }
