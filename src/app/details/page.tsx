@@ -1,10 +1,8 @@
 "use client"
 
-import { cn } from "@/lib/utils";
 import Gauge from "@/src/components/gauge";
-import { Button } from "@/src/components/ui/button";
-import { Card, CardHeader } from "@/src/components/ui/card";
-import { Citrus, Clock, Droplet, Flower, Flower2, Info, Snowflake, Sprout, Sun } from "lucide-react";
+import InfoBox from "@/src/components/info-box";
+import { Clock, Droplet, Flower, Info, Sprout, Sun } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -33,70 +31,33 @@ const Details = () => {
           <p className="text-center mt-2 text-zinc-700">Umidade</p>
         </div>
       </section>
+
       <section className="mt-2 p-8">
         <div className="flex gap-2 justify-center">
           <Info size={20} className="stroke-primary"/>
           <p className="text-zinc-700">Última irrigação 2h atrás</p>
         </div>
       </section>
+
       <hr></hr>
+
       <section className="space-y-4 p-8">
         <h2 className="text-center font-bold text-xl text-primary">Informações</h2>
-        <div className="flex gap-2">
-          <Card className="p-3 w-13">
-            <CardHeader className="p-0 flex justify-center">
-              <Flower size={28} className="stroke-rose-400"/>
-            </CardHeader>
-          </Card>
-          <div>
-            <p className="font-bold">Flora</p>
-            <p className="text-zinc-600">Primavera</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Card className="p-3 w-13">
-            <CardHeader className="p-0 flex justify-center">
-              <Sprout size={28} className="stroke-emerald-600"/>
-            </CardHeader>
-          </Card>
-          <div>
-            <p className="font-bold">Colheita</p>
-            <p className="text-zinc-600">Inverno</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Card className="p-3 w-13">
-            <CardHeader className="p-0 flex justify-center">
-              <Sun size={28} className="stroke-yellow-500"/>
-            </CardHeader>
-          </Card>
-          <div>
-            <p className="font-bold">Tempo de sol</p>
-            <p className="text-zinc-600">4h</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Card className="p-3 w-13">
-            <CardHeader className="p-0 flex justify-center">
-              <Droplet size={28} className="stroke-blue-300 fill-blue-200"/>
-            </CardHeader>
-          </Card>
-          <div>
-            <p className="font-bold">Irrigação</p>
-            <p className="text-zinc-600">5-7 dias</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Card className="p-3 w-13">
-            <CardHeader className="p-0 flex justify-center">
-              <Clock size={28} className="stroke-gray-500"/>
-            </CardHeader>
-          </Card>
-          <div>
-            <p className="font-bold">Período de irrigação</p>
-            <p className="text-zinc-600">Manhã - Tarde</p>
-          </div>
-        </div>
+        <InfoBox title="Flora" subtitle="Primavera">
+          <Flower className="stroke-rose-300"/>
+        </InfoBox>
+        <InfoBox title="Colheita" subtitle="Inverno">
+          <Sprout className="stroke-emerald-600"/>
+        </InfoBox>
+        <InfoBox title="Período de sol" subtitle="4h">
+          <Sun className="stroke-yellow-500"/>
+        </InfoBox>
+        <InfoBox title="Irrigação" subtitle="5-7 dias">
+          <Droplet className="stroke-blue-500 fill-blue-300"/>
+        </InfoBox>
+        <InfoBox title="Período de irrigação" subtitle="Manhã - Tarde">
+          <Clock className="stroke-zinc-500"/>
+        </InfoBox>
       </section>
     </main>
   )

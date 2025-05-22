@@ -9,7 +9,7 @@ const Home = () => {
 			<Logo width={100} height={100} />
 			<ul>
 				<li>
-					<Card className="w-full relative overflow-clip p-2 cursor-pointer flex flex-row">
+					<Card className="w-full hover:scale-[101%] transition-transform relative overflow-clip p-2 cursor-pointer flex flex-row">
 						<CardHeader className="relative">
 							<div className="absolute opacity-40 top-1/2 -translate-y-1/2 -left-1/2 p-3 border-[4px] rounded-full border-primary ">
 								<Leaf className="stroke-lime-700" size={72} />
