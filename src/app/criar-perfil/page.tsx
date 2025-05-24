@@ -5,7 +5,7 @@ import { Button } from "@/src/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import loginSchema from "@/src/schemas/login-schema"
+import perfilSchema from "@/src/schemas/perfil-schema"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { redirect } from "next/navigation";
@@ -14,15 +14,17 @@ import Logo from "../../components/logo";
 {/*Protótipo total, somente pra existir. */}
 export default function CriarPerfil() {
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof perfilSchema>>({
+    resolver: zodResolver(perfilSchema),
     defaultValues: {
-      username: "",
-      password: ""
+      sun: 0,
+      irrigation: 0,
+      temp: 0,
+      time: "2025-10-02"
     }
   });
 
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+  const onSubmit = (values: z.infer<typeof perfilSchema>) => {
     redirect("/");
   }
 
