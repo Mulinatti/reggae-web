@@ -5,7 +5,7 @@ import { Button } from "@/src/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import loginSchema from "@/src/schemas/login-schema"
+import cadastroSchema from "@/src/schemas/cadastro-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { redirect } from "next/navigation";
@@ -13,15 +13,16 @@ import Logo from "../../components/logo";
 
 export default function Cadastro() {
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof cadastroSchema>>({
+    resolver: zodResolver(cadastroSchema),
     defaultValues: {
       username: "",
-      password: ""
+      password: "",
+      password2: "*"
     }
   });
 
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+  const onSubmit = (values: z.infer<typeof cadastroSchema>) => {
     redirect("/");
   }
 
