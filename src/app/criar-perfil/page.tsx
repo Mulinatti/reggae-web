@@ -20,7 +20,7 @@ export default function CriarPerfil() {
       sun: 0,
       irrigation: 0,
       temp: 0,
-      time: "2025-10-02"
+      time: 0
     }
   });
 

@@ -4,7 +4,7 @@ const perfilSchema = z.object({
   sun: z.number(),
   irrigation: z.number(),
   temp: z.number(),
-  time: z.string()
+  time: z.number().optional()
 });
 
 export default perfilSchema;
