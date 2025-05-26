@@ -143,4 +143,8 @@
   .temperature {
     @apply bg-gradient-to-br from-blue-800 to-red-900;
   }
+
+  .rdp-vhidden {
+    @apply hidden;
+  }
 }

@@ -82,7 +82,7 @@ export default function CriarPerfil() {
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={`w-[240px] pl-3 text-left font-normal
+                          className={`w-full hover:bg-secondary border-primary pl-3 text-left font-normal
                           ${!field.value && "text-muted-foreground"}`}
                         >
                           {field.value ? (
@@ -102,7 +102,7 @@ export default function CriarPerfil() {
                         selected={field.value}
                         onSelect={field.onChange}
                         fromYear={2025}
-                        toYear={new Date().getFullYear()}
+                        toYear={new Date().getFullYear() + 64}
                         disabled={(date) =>
                           date < new Date()
                         }
