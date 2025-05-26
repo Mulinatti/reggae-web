@@ -1,13 +1,13 @@
 import Logo from "@/src/components/logo";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/src/components/ui/card";
-import { Droplet, Leaf } from "lucide-react";
+import { Droplet, Leaf, LogOut, Settings } from "lucide-react";
 
 const Home = () => {
 	return (
-		<main className="p-5 space-y-2">
+		<main className="p-5 flex flex-col h-dvh gap-2">
 			<Logo width={100} height={100} />
-			<ul>
+			<ul className="flex-1">
 				<li>
 					<Card className="w-full hover:scale-[101%] transition-transform relative overflow-clip p-2 cursor-pointer flex flex-row">
 						<CardHeader className="relative">
@@ -28,6 +28,14 @@ const Home = () => {
 					</Card>
 				</li>
 			</ul>
+			<section className="flex justify-evenly">
+				<Button variant="ghost">
+					<LogOut className="size-8 stroke-zinc-500"/>
+				</Button>
+				<Button variant="ghost">
+					<Settings className="size-8 stroke-zinc-500"/>
+				</Button>
+			</section>
 		</main>
 	)
 }
