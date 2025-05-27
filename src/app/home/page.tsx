@@ -1,9 +1,42 @@
+"use client"
+
 import Logo from "@/src/components/logo";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { Droplet, Leaf, LogOut, Settings } from "lucide-react";
+import mqtt, { MqttClient } from "mqtt"
+import { useEffect } from "react";
 
 const Home = () => {
+
+
+
+	// useEffect(() => {
+
+	// 	const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
+	// 		username: "Frontend",
+	// 		password: "Frontend123",
+	// 	});
+
+	// 	client.on("connect", () => {
+	// 		const topical = "temperatura_e_umidade_do_solo";
+
+	// 		client.subscribe(topical, (err) => {
+	// 			if (!err) {
+	// 				console.log(`Inscrito no tópico ${topical}`);
+	// 			} else {
+	// 				console.error('Erro ao se inscrever:', err);
+	// 			}
+	// 		});
+	// 	});
+
+
+	// 	client.on("message", (topic: string, message: Buffer) => {
+	// 		console.log(message.toString());
+	// 	});
+
+	// }, []);
+
 	return (
 		<main className="p-5 flex flex-col h-dvh gap-2">
 			<Logo width={100} height={100} />
@@ -30,10 +63,10 @@ const Home = () => {
 			</ul>
 			<section className="flex justify-evenly">
 				<Button variant="ghost">
-					<LogOut className="size-8 stroke-zinc-500"/>
+					<LogOut className="size-8 stroke-zinc-500" />
 				</Button>
 				<Button variant="ghost">
-					<Settings className="size-8 stroke-zinc-500"/>
+					<Settings className="size-8 stroke-zinc-500" />
 				</Button>
 			</section>
 		</main>
