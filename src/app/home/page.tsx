@@ -3,6 +3,7 @@
 import Logo from "@/src/components/logo";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/src/components/ui/card";
+import { env } from "@/src/env";
 import { Droplet, Leaf, LogOut, Settings } from "lucide-react";
 import mqtt, { MqttClient } from "mqtt"
 import { useEffect } from "react";
@@ -11,31 +12,37 @@ const Home = () => {
 
 
 
-	// useEffect(() => {
+	useEffect(() => {
 
-	// 	const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
-	// 		username: "Frontend",
-	// 		password: "Frontend123",
-	// 	});
+		const client = mqtt.connect(env.MQTT_URL, {
+			username: env.MQTT_USERNAME,
+			password: env.MQTT_PASSWORD,
+		});
 
-	// 	client.on("connect", () => {
-	// 		const topical = "temperatura_e_umidade_do_solo";
+		client.on("connect", () => {
+			const topical = "temperatura_e_umidade_do_solo";
 
-	// 		client.subscribe(topical, (err) => {
-	// 			if (!err) {
-	// 				console.log(`Inscrito no tópico ${topical}`);
-	// 			} else {
-	// 				console.error('Erro ao se inscrever:', err);
-	// 			}
-	// 		});
-	// 	});
+			client.subscribe(topical, (err) => {
+				if (!err) {
+					console.log(`Inscrito no tópico ${topical}`);
+					client.end();
+				} else {
+					console.error('Erro ao se inscrever:', err);
+					client.end();
+				}
+			});
+		});
 
 
-	// 	client.on("message", (topic: string, message: Buffer) => {
-	// 		console.log(message.toString());
-	// 	});
+		client.on("message", (topic: string, message: Buffer) => {
+			console.log(message.toString());
+			client.end();
+		});
 
-	// }, []);
+		return () => {
+			client.end();
+		}
+	}, []);
 
 	return (
 		<main className="p-5 flex flex-col h-dvh gap-2">
