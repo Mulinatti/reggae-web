@@ -10,40 +10,6 @@ import { useEffect } from "react";
 
 const Home = () => {
 
-
-
-	useEffect(() => {
-
-		const client = mqtt.connect(env.MQTT_URL, {
-			username: env.MQTT_USERNAME,
-			password: env.MQTT_PASSWORD,
-		});
-
-		client.on("connect", () => {
-			const topical = "temperatura_e_umidade_do_solo";
-
-			client.subscribe(topical, (err) => {
-				if (!err) {
-					console.log(`Inscrito no tópico ${topical}`);
-					client.end();
-				} else {
-					console.error('Erro ao se inscrever:', err);
-					client.end();
-				}
-			});
-		});
-
-
-		client.on("message", (topic: string, message: Buffer) => {
-			console.log(message.toString());
-			client.end();
-		});
-
-		return () => {
-			client.end();
-		}
-	}, []);
-
 	return (
 		<main className="p-5 flex flex-col h-dvh gap-2">
 			<Logo width={100} height={100} />

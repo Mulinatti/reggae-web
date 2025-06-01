@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 const perfilSchema = z.object({
-  sun: z.number(),
-  irrigation: z.number(),
-  temp: z.number(),
+  sun: z.coerce.number(),
+  irrigation: z.coerce.number(),
+  temp: z.coerce.number(),
   time: z.optional(z.date())
 });
 

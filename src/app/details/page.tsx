@@ -2,15 +2,49 @@
 
 import Gauge from "@/src/components/gauge";
 import InfoBox from "@/src/components/info-box";
+import { env } from "@/src/env";
 import { Clock, Droplet, Flower, Info, Sprout, Sun } from "lucide-react";
+import mqtt from "mqtt"
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Details = () => {
 
   const [temperature, setTemperature] = useState<number>(0);
+  const [humidity, setHumidity] = useState<number>(0);
 
-  const maxTemperature = 45;
+  useEffect(() => {
+
+		const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
+			username: "Frontend",
+			password: "Frontend123",
+		});
+
+		client.on("connect", () => {
+			const topical = "temperatura_e_umidade_do_solo";
+
+			client.subscribe(topical, (err) => {
+				if (!err) {
+					console.log(`Inscrito no tópico ${topical}`);
+				} else {
+					console.error('Erro ao se inscrever:', err);
+				}
+			});
+		});
+
+
+		client.on("message", (topic: string, message: Buffer) => {
+			const { temperature, humidity } = JSON.parse(message.toString());
+      setTemperature(temperature);
+      setHumidity(humidity);
+		});
+
+    return () => {
+      client.end();
+    }
+
+	}, []);
+  
 
   return (
     <main className="p-5">
@@ -23,11 +57,11 @@ const Details = () => {
       </div>
       <section className="flex gap-10 justify-center mt-8">
         <div>
-          <Gauge gaugeValue={temperature} maxGaugeValue={maxTemperature} gaugeType="temperature"/>
+          <Gauge gaugeValue={temperature} maxGaugeValue={45} gaugeType="temperature"/>
           <p className="text-center mt-2 text-zinc-700">Temperatura</p>
         </div>
         <div>
-          <Gauge gaugeValue={temperature} maxGaugeValue={maxTemperature} gaugeType="humidity"/>
+          <Gauge gaugeValue={humidity} maxGaugeValue={100} gaugeType="humidity"/>
           <p className="text-center mt-2 text-zinc-700">Umidade</p>
         </div>
       </section>

@@ -11,14 +11,15 @@ import { Input } from "../../components/ui/input";
 import { redirect } from "next/navigation";
 import Logo from "../../components/logo";
 
-{/*Coisas pro calendário*/}
+{/*Coisas pro calendário*/ }
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
 import { Calendar } from "../../components/ui/calendar";
 import { ptBR } from "date-fns/locale";
+import mqtt from "mqtt";
 
-{/*Protótipo total, somente pra existir. */}
+{/*Protótipo total, somente pra existir. */ }
 export default function CriarPerfil() {
 
   const form = useForm<z.infer<typeof perfilSchema>>({
@@ -32,7 +33,16 @@ export default function CriarPerfil() {
   });
 
   const onSubmit = (values: z.infer<typeof perfilSchema>) => {
-    redirect("/");
+    const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
+      username: "Frontend",
+      password: "Frontend123",
+    });
+
+    const topic = "dados";
+    
+    client.publish(topic, JSON.stringify(values));
+
+    console.log(JSON.stringify(values));
   }
 
   return (
@@ -78,38 +88,38 @@ export default function CriarPerfil() {
               <FormItem>
                 <FormLabel>Tempo para Colheita</FormLabel>
                 <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={`w-full hover:bg-secondary border-primary pl-3 text-left font-normal
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={`w-full hover:bg-secondary border-primary pl-3 text-left font-normal
                           ${!field.value && "text-muted-foreground"}`}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd/MM/yyyy")
-                          ) : (
-                            <span>Escolha uma data para colher</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        locale={ptBR}
-                        captionLayout="dropdown-buttons"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        fromYear={2025}
-                        toYear={new Date().getFullYear() + 64}
-                        disabled={(date) =>
-                          date < new Date()
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                      >
+                        {field.value ? (
+                          format(field.value, "dd/MM/yyyy")
+                        ) : (
+                          <span>Escolha uma data para colher</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      locale={ptBR}
+                      captionLayout="dropdown-buttons"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      fromYear={2025}
+                      toYear={new Date().getFullYear() + 64}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )} />
