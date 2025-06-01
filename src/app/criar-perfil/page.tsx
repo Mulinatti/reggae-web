@@ -58,7 +58,7 @@ export default function CriarPerfil() {
               <FormItem>
                 <FormLabel>Tempo de Sol</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="number"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -68,7 +68,7 @@ export default function CriarPerfil() {
               <FormItem>
                 <FormLabel>Frequência de Irrigação</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="number"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -78,7 +78,7 @@ export default function CriarPerfil() {
               <FormItem>
                 <FormLabel>Temperatura Ideal</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="number"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>

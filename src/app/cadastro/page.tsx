@@ -18,7 +18,7 @@ export default function Cadastro() {
     defaultValues: {
       username: "",
       password: "",
-      password2: "*"
+      password2: ""
     }
   });
 
@@ -48,7 +48,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -59,7 +59,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
