@@ -28,7 +28,7 @@ export type Plant = {
   cycle: string
 }
 
-const API_KEY = ''
+const API_KEY = 'PRECISA SER ALTERADO'
 
 export function PlantCombobox({onSelectPlant,}: {onSelectPlant: (plant: Plant) => void}) {
   const [open, setOpen] = React.useState(false)
