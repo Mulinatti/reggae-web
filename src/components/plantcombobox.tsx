@@ -20,14 +20,17 @@ import {
 } from '../components/ui/popover'
 import { Button } from '../components/ui/button'
 
-type Plant = {
+export type Plant = {
   id: number
   common_name: string
+  sunlight: string[]
+  watering: string
+  cycle: string
 }
 
-const API_KEY = 'sk-zw4E683cda5eda31a10800'
+const API_KEY = 'sk-kjQ8683d1a1b4437310806'
 
-export function PlantCombobox() {
+export function PlantCombobox({onSelectPlant,}: {onSelectPlant: (plant: Plant) => void}) {
   const [open, setOpen] = React.useState(false)
   const [selectedPlant, setSelectedPlant] = React.useState<string | null>(null)
   const [plants, setPlants] = React.useState<Plant[]>([])
@@ -35,6 +38,7 @@ export function PlantCombobox() {
 
   const fetchPlants = React.useCallback(
     debounce(async (query: string) => {
+      console.log('Query recebida:', `"${query}"`)
       try {
         const res = await axios.get(
           `https://perenual.com/api/species-list?key=${API_KEY}&q=${query}&page=1`
@@ -42,6 +46,9 @@ export function PlantCombobox() {
         const data = res.data.data.map((plant: any) => ({
           id: plant.id,
           common_name: plant.common_name || 'Nome desconhecido',
+          sunlight: plant.sunlight || [],
+          watering: plant.watering || 'unknown',
+          cycle: plant.cycle || 'unknown'
         }))
         setPlants(data)
       } catch (err) {
@@ -84,8 +91,9 @@ export function PlantCombobox() {
               <CommandItem
                 key={plant.id}
                 value={plant.common_name}
-                onSelect={(currentValue) => {
-                  setSelectedPlant(currentValue)
+                onSelect={() => {
+                  setSelectedPlant(plant.common_name)
+                  onSelectPlant(plant)
                   setOpen(false)
                 }}
               >

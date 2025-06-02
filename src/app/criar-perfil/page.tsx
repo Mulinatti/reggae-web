@@ -19,8 +19,14 @@ import { Calendar } from "../../components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import mqtt from "mqtt";
 
+import { Plant, PlantCombobox } from "../../components/plantcombobox"
+import { useState, useEffect } from "react";
+
+
 {/*Protótipo total, somente pra existir. */ }
 export default function CriarPerfil() {
+
+  const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
 
   const form = useForm<z.infer<typeof perfilSchema>>({
     resolver: zodResolver(perfilSchema),
@@ -31,6 +37,45 @@ export default function CriarPerfil() {
       time: undefined
     }
   });
+
+  useEffect(() => {
+    if (selectedPlant) {
+      const sun = selectedPlant.sunlight?.length ?? 0;
+
+      const irrigation =
+        selectedPlant.watering === 'frequent'
+          ? 3
+          : selectedPlant.watering === 'average'
+          ? 2
+          : 1;
+
+      const temp = selectedPlant.cycle === 'perennial' ? 25 : 20;
+
+      form.reset({
+        sun,
+        irrigation,
+        temp,
+        time: undefined
+      });
+    }
+  }, [selectedPlant, form]);
+
+  // Atualiza campos com base na planta
+  const handleSelectPlant = (plant: any) => {
+    // Exemplos fictícios — você deve ajustar de acordo com os dados reais da API
+    const sunValue = plant.sunlight?.length || 0
+    const irrigationValue = plant.watering === "frequent" ? 3 : plant.watering === "average" ? 2 : 1
+    const tempValue = plant.cycle === "annual" ? 22 : plant.cycle === "perennial" ? 28 : 25
+
+    form.setValue("sun", sunValue)
+    form.setValue("irrigation", irrigationValue)
+    form.setValue("temp", tempValue)
+
+    // Define uma data para colheita fictícia com base no ciclo
+    const estimatedHarvest = new Date()
+    estimatedHarvest.setMonth(estimatedHarvest.getMonth() + (plant.cycle === "annual" ? 3 : 6))
+    form.setValue("time", estimatedHarvest)
+  }
 
   const onSubmit = (values: z.infer<typeof perfilSchema>) => {
     const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
@@ -53,7 +98,7 @@ export default function CriarPerfil() {
       <div className="w-full h-[calc(80%-75px)] flex items-center">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1">
-
+          <PlantCombobox onSelectPlant={setSelectedPlant} />
             <FormField name="sun" control={form.control} render={({ field }) => (
               <FormItem>
                 <FormLabel>Tempo de Sol</FormLabel>
