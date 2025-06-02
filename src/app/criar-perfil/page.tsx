@@ -31,50 +31,28 @@ export default function CriarPerfil() {
   const form = useForm<z.infer<typeof perfilSchema>>({
     resolver: zodResolver(perfilSchema),
     defaultValues: {
+      nome: "",
       sun: 0,
-      irrigation: 0,
-      temp: 0,
+      min: 0,
+      max: 0,
       time: undefined
     }
   });
 
-  useEffect(() => {
-    if (selectedPlant) {
-      const sun = selectedPlant.sunlight?.length ?? 0;
-
-      const irrigation =
-        selectedPlant.watering === 'frequent'
-          ? 3
-          : selectedPlant.watering === 'average'
-          ? 2
-          : 1;
-
-      const temp = selectedPlant.cycle === 'perennial' ? 25 : 20;
-
-      form.reset({
-        sun,
-        irrigation,
-        temp,
-        time: undefined
-      });
-    }
-  }, [selectedPlant, form]);
-
   // Atualiza campos com base na planta
   const handleSelectPlant = (plant: any) => {
-    // Exemplos fictícios — você deve ajustar de acordo com os dados reais da API
-    const sunValue = plant.sunlight == "full_sun" ? 7 : plant.sunlight == "part_shade" ? 5 : 0
-    const irrigationValue = plant.watering === "frequent" ? 3 : plant.watering === "average" ? 2 : 1
-    const tempValue = plant.cycle === "annual" ? 22 : plant.cycle === "perennial" ? 28 : 25
+    const sunValue = Math.floor(Math.random() * (10 - 3 + 1)) + 3; // 3 a 10
+    const minValue = Math.floor(Math.random() * (20 - 5 + 1)) + 5; // 5 a 20
+    const maxValue = Math.floor(Math.random() * (minValue + 20 - (minValue + 5) + 1)) + (minValue + 5); // min+5 a min+20
 
-    form.setValue("sun", sunValue)
-    form.setValue("irrigation", irrigationValue)
-    form.setValue("temp", tempValue)
+    const estimatedHarvest = new Date();
+    const daysToAdd = Math.floor(Math.random() * (180 - 60 + 1)) + 60; // entre 60 e 180 dias
+    estimatedHarvest.setDate(estimatedHarvest.getDate() + daysToAdd);
 
-    // Define uma data para colheita fictícia com base no ciclo
-    const estimatedHarvest = new Date()
-    estimatedHarvest.setMonth(estimatedHarvest.getMonth() + (plant.cycle === "annual" ? 3 : 6))
-    form.setValue("time", estimatedHarvest)
+    form.setValue("sun", sunValue);
+    form.setValue("min", minValue);
+    form.setValue("max", maxValue);
+    form.setValue("time", estimatedHarvest);
   }
 
   const onSubmit = (values: z.infer<typeof perfilSchema>) => {
@@ -98,10 +76,22 @@ export default function CriarPerfil() {
       <div className="w-full h-[calc(80%-75px)] flex items-center">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1">
-          <PlantCombobox onSelectPlant={setSelectedPlant} />
+          
+          <PlantCombobox onSelectPlant={(plant) => {setSelectedPlant(plant); handleSelectPlant(plant);}} />
+
             <FormField name="sun" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Tempo de Sol</FormLabel>
+                <FormLabel>Tempo de Exposição ao Sol</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+
+            <FormField name="min" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Temperatura Minima</FormLabel>
                 <FormControl>
                   <Input {...field} type="number"/>
                 </FormControl>
@@ -109,19 +99,9 @@ export default function CriarPerfil() {
               </FormItem>
             )} />
 
-            <FormField name="irrigation" control={form.control} render={({ field }) => (
+            <FormField name="max" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Frequência de Irrigação</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number"/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField name="temp" control={form.control} render={({ field }) => (
-              <FormItem>
-                <FormLabel>Temperatura Ideal</FormLabel>
+                <FormLabel>Temperatura Máxima</FormLabel>
                 <FormControl>
                   <Input {...field} type="number"/>
                 </FormControl>

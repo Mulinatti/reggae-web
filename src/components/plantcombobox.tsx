@@ -28,7 +28,7 @@ export type Plant = {
   cycle: string
 }
 
-const API_KEY = 'sk-kjQ8683d1a1b4437310806'
+const API_KEY = ''
 
 export function PlantCombobox({onSelectPlant,}: {onSelectPlant: (plant: Plant) => void}) {
   const [open, setOpen] = React.useState(false)
@@ -39,6 +39,7 @@ export function PlantCombobox({onSelectPlant,}: {onSelectPlant: (plant: Plant) =
   const fetchPlants = React.useCallback(
     debounce(async (query: string) => {
       console.log('Query recebida:', `"${query}"`)
+      if (!query.trim()) return;
       try {
         const res = await axios.get(
           `https://perenual.com/api/species-list?key=${API_KEY}&q=${query}&page=1`
@@ -48,7 +49,7 @@ export function PlantCombobox({onSelectPlant,}: {onSelectPlant: (plant: Plant) =
           common_name: plant.common_name || 'Nome desconhecido',
           sunlight: plant.sunlight || [],
           watering: plant.watering || 'unknown',
-          cycle: plant.cycle || 'unknown'
+          cycle: plant.cycle || 'unknown',
         }))
         setPlants(data)
       } catch (err) {
