@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm:dev:next\" \"npm:dev:mqtt\"",
-    "dev:next": "next dev",
-    "dev:mqtt": "npm run build:mqtt && node dist/mqtt-ws-server.js",
-    "build:mqtt": "tsc mqtt-ws-server.ts --outDir dist",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
