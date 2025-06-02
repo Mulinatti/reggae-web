@@ -23,7 +23,6 @@ import { Plant, PlantCombobox } from "../../components/plantcombobox"
 import { useState, useEffect } from "react";
 
 
-{/*Protótipo total, somente pra existir. */ }
 export default function CriarPerfil() {
 
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
@@ -49,6 +48,7 @@ export default function CriarPerfil() {
     const daysToAdd = Math.floor(Math.random() * (180 - 60 + 1)) + 60; // entre 60 e 180 dias
     estimatedHarvest.setDate(estimatedHarvest.getDate() + daysToAdd);
 
+    form.setValue("nome", plant.common_name);
     form.setValue("sun", sunValue);
     form.setValue("min", minValue);
     form.setValue("max", maxValue);
@@ -111,7 +111,7 @@ export default function CriarPerfil() {
 
             <FormField name="time" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Tempo para Colheita</FormLabel>
+                <FormLabel>Data para Colheita</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
