@@ -4,12 +4,13 @@ import Logo from "@/src/components/logo";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { env } from "@/src/env";
+import axios, { AxiosResponse } from "axios";
 import { Droplet, Leaf, LogOut, Settings } from "lucide-react";
 import mqtt, { MqttClient } from "mqtt"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-
+	
 	return (
 		<main className="p-5 flex flex-col h-dvh gap-2">
 			<Logo width={100} height={100} />
