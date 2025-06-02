@@ -63,7 +63,7 @@ export default function CriarPerfil() {
   // Atualiza campos com base na planta
   const handleSelectPlant = (plant: any) => {
     // Exemplos fictícios — você deve ajustar de acordo com os dados reais da API
-    const sunValue = plant.sunlight?.length || 0
+    const sunValue = plant.sunlight == "full_sun" ? 7 : plant.sunlight == "part_shade" ? 5 : 0
     const irrigationValue = plant.watering === "frequent" ? 3 : plant.watering === "average" ? 2 : 1
     const tempValue = plant.cycle === "annual" ? 22 : plant.cycle === "perennial" ? 28 : 25
 
