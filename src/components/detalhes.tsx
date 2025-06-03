@@ -1,12 +1,14 @@
 "use client"
 
-import { Info, TriangleAlert } from 'lucide-react'
+import { ArrowLeftCircle, Info, Sprout, TriangleAlert } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import IDetails from '../app/interfaces/IDetails';
 import Gauge from './gauge';
 import mqtt from 'mqtt';
 import IDevice from '../app/interfaces/IDevice';
+import IPlant from '../app/interfaces/IPlant';
+import Link from 'next/link';
 
 interface DetailsProps {
     deviceId: string;
@@ -15,7 +17,7 @@ interface DetailsProps {
 const Detalhes = ({ deviceId }: DetailsProps) => {
 
     const topic = `dados_coletados_${deviceId}`;
-    const [plantName, setPlantName] = useState<string>();
+    const [plant, setPlant] = useState<IDevice>();
 
 
     const [details, setDetails] = useState<IDetails>();
@@ -25,8 +27,8 @@ const Detalhes = ({ deviceId }: DetailsProps) => {
         const data = localStorage.getItem("plants");
         if (data) {
             const plants: IDevice[] = JSON.parse(data);
-            const plant = plants.find(plant => plant.deviceId === deviceId);
-            setPlantName(plant?.plantName);
+            const findedPlant = plants.find(plant => plant.deviceId === deviceId);
+            setPlant(findedPlant);
         }
 
         const client = mqtt.connect(
@@ -68,7 +70,7 @@ const Detalhes = ({ deviceId }: DetailsProps) => {
     console.log(details);
 
     const wateredTime = (time: number) => {
-        if(time <= 60)
+        if (time <= 60)
             return `Última irrigação ${time} ${time != 1 ? "minutos" : "minuto"} atrás`;
         else {
             const horas = parseInt((time / 60).toFixed(0));
@@ -78,11 +80,16 @@ const Detalhes = ({ deviceId }: DetailsProps) => {
 
     return (
         <div>
+            <div>
+                <Link href={`/home/${plant?.user}`}>
+                    <ArrowLeftCircle className='stroke-zinc-400' size={42}/>
+                </Link>
+            </div>
             <div className="bg-primary/10 rounded-full w-[300px] h-[300px] mx-auto flex justify-center items-center">
                 <Image className="pb-5" width={170} height={170} src="/samambaia.png" alt="Samambaia" />
             </div>
             <div className="text-center">
-                <h1 className="mt-5 font-bold text-2xl text-primary">{plantName}</h1>
+                <h1 className="mt-5 font-bold text-2xl text-primary">{plant?.plantName}</h1>
                 <p className="text-xs text-zinc-500">{details?.deviceId}</p>
             </div>
             <section className="flex gap-10 justify-center mt-8">
@@ -101,6 +108,20 @@ const Detalhes = ({ deviceId }: DetailsProps) => {
                     <Info size={20} className="stroke-primary" />
                     <p className="text-zinc-700">{wateredTime(details?.min_since_watered!)}</p>
                 </div>
+
+                {plant?.harvest && 
+                <div className='flex justify-center'>
+                    <div className='flex items-center gap-4'>
+                        <div className='border p-2 rounded-md'>
+                            <Sprout size={28} className='stroke-green-700' />
+                        </div>
+                        <div>
+                            <p className='text-sm font-bold'>Data da colheita</p>
+                            <p className='text-sm font-light'>{plant?.harvest}</p>
+                        </div>
+                    </div>
+                </div>}
+
                 <div hidden={!details?.sun_expo_ended} className="flex gap-2 justify-center animate-pulse">
                     <Info size={20} className="stroke-blue-500" />
                     <p className="text-blue-500">Fim da exposição ao sol</p>
@@ -117,6 +138,7 @@ const Detalhes = ({ deviceId }: DetailsProps) => {
                     <TriangleAlert size={20} className="stroke-red-400" />
                     <p className="text-red-500">Sem água no reservatório</p>
                 </div>
+
             </section>
         </div>
     )
