@@ -15,6 +15,8 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from './ui/calendar';
 import { ptBR } from 'date-fns/locale';
 
+import { Plant, PlantCombobox } from "../components/plantcombobox"
+
 interface IUser {
   deviceId: string,
   username: string,
@@ -29,6 +31,8 @@ const FormularioPerfil = ({user}: FormularioProps) => {
 
     const [deviceId, setDeviceId] = useState<string>();
 
+    const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+
     const form = useForm<z.infer<typeof perfilSchema>>({
         resolver: zodResolver(perfilSchema),
         defaultValues: {
@@ -41,6 +45,25 @@ const FormularioPerfil = ({user}: FormularioProps) => {
             time: new Date()
         }
     });
+
+    // Atualiza campos com base na planta
+  const handleSelectPlant = (plant: any) => {
+    const sunValue = Math.floor(Math.random() * (10 - 3 + 1)) + 3; // 3 a 10
+    const minValue = Math.floor(Math.random() * (20 - 5 + 1)) + 5; // 5 a 20
+    const maxValue = Math.floor(Math.random() * (minValue + 20 - (minValue + 5) + 1)) + (minValue + 5); // min+5 a min+20
+    const irriValue = Math.floor(Math.random() * (6 - 0 + 1)); // 0 a 6 
+
+    const estimatedHarvest = new Date();
+    const daysToAdd = Math.floor(Math.random() * (180 - 60 + 1)) + 60; // entre 60 e 180 dias
+    estimatedHarvest.setDate(estimatedHarvest.getDate() + daysToAdd);
+
+    form.setValue("name", plant.common_name);
+    form.setValue("sun", sunValue);
+    form.setValue("min", minValue);
+    form.setValue("max", maxValue);
+    form.setValue("time", estimatedHarvest);
+    form.setValue("irrigation", irriValue);
+  }
 
     useEffect(() => {
         const data = localStorage.getItem("users");
@@ -72,6 +95,8 @@ const FormularioPerfil = ({user}: FormularioProps) => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1">
 
+                <PlantCombobox onSelectPlant={(plant) => {setSelectedPlant(plant); handleSelectPlant(plant);}} />
+
                 <FormField name="name" control={form.control} render={({ field }) => (
                     <FormItem>
                         <FormLabel>Nome da planta</FormLabel>
@@ -86,7 +111,7 @@ const FormularioPerfil = ({user}: FormularioProps) => {
                     <FormItem>
                         <FormLabel>Tempo de Sol</FormLabel>
                         <FormControl>
-                            <Input {...field} />
+                            <Input {...field} type="number"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -96,7 +121,7 @@ const FormularioPerfil = ({user}: FormularioProps) => {
                     <FormItem>
                         <FormLabel>Frequência de Irrigação</FormLabel>
                         <FormControl>
-                            <Input {...field} />
+                            <Input {...field} type="number"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -106,7 +131,7 @@ const FormularioPerfil = ({user}: FormularioProps) => {
                     <FormItem>
                         <FormLabel>Temperatura máxima</FormLabel>
                         <FormControl>
-                            <Input {...field} />
+                            <Input {...field} type="number"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -116,7 +141,7 @@ const FormularioPerfil = ({user}: FormularioProps) => {
                     <FormItem>
                         <FormLabel>Temperatura mínima</FormLabel>
                         <FormControl>
-                            <Input {...field} />
+                            <Input {...field} type="number"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>
