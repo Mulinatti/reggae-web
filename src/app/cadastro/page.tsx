@@ -17,13 +17,22 @@ export default function Cadastro() {
     resolver: zodResolver(cadastroSchema),
     defaultValues: {
       username: "",
+      deviceId: "",
       password: "",
-      password2: "*"
+      confirmPassword: ""
     }
   });
 
   const onSubmit = (values: z.infer<typeof cadastroSchema>) => {
-    redirect("/");
+    const storedUsers = localStorage.getItem("users");
+    const { username, password, deviceId } = values;
+
+    if (storedUsers) {
+      localStorage.setItem("users", JSON.stringify([...JSON.parse(storedUsers), {username, password, deviceId}]))
+      return redirect(`/home/${username}`)
+    }
+    localStorage.setItem("users", JSON.stringify([{username, password, deviceId}]));
+    return redirect(`/home/${username}`)
   }
 
   return (
@@ -36,7 +45,17 @@ export default function Cadastro() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1">
             <FormField name="username" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Usuário</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+
+            <FormField name="deviceId" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Id de dispositivo (OPCIONAL)</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -46,20 +65,20 @@ export default function Cadastro() {
 
             <FormField name="password" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )} />
-            
+
             {/* Nada feito ainda. Conferir posteriormente sobre como fazer isso. */}
-            <FormField name="password2" control={form.control} render={({ field }) => (
+            <FormField name="confirmPassword" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Confirmar senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

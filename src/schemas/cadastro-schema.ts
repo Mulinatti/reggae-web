@@ -1,11 +1,15 @@
 import { z } from "zod";
 
-const cadastroSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-  password2: z.string(),
-}).refine((cadastro) => cadastro.password == cadastro.password2, {
-    message: "Senhas precisam ser iguais !",
-});
+const cadastroSchema = z
+  .object({
+    username: z.string(),
+    deviceId: z.string().optional(),
+    password: z.string(),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
 
 export default cadastroSchema;

@@ -21,8 +21,8 @@ const gauge = {
 	}
 };
 
-const Gauge = ({maxGaugeValue, gaugeValue = 0, gaugeType = "temperature"}: GaugeProps) => {
-	
+const Gauge = ({ maxGaugeValue, gaugeValue = 0, gaugeType = "temperature" }: GaugeProps) => {
+
 	const gaugeRotation = (gaugeValue / maxGaugeValue) * 360 - 180;
 
 	return (

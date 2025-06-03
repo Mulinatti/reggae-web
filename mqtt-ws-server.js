@@ -20,10 +20,10 @@ wss.on("connection", (ws) => {
 
 // Conecta ao broker MQTT
 const mqttClient = mqtt.connect(
-  process.env.MQTT_URL,
+  "wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt",
   {
-    username: process.env.MQTT_USERNAME,
-    password: process.env.MQTT_PASSWORD,
+    username: "Frontend",
+    password: "Frontend123",
   }
 );
 

@@ -2,29 +2,48 @@
 
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import perfilSchema from "@/src/schemas/perfil-schema"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../components/ui/input";
-import { redirect } from "next/navigation";
-import Logo from "../../components/logo";
+import { Input } from "../../../components/ui/input";
+import { redirect, useRouter } from "next/navigation";
+import Logo from "../../../components/logo";
 
 {/*Coisas pro calendário*/ }
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
-import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
-import { Calendar } from "../../components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../components/ui/popover"
+import { Calendar } from "../../../components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import mqtt from "mqtt";
+import { useEffect, useState } from "react";
 
 {/*Protótipo total, somente pra existir. */ }
-export default function CriarPerfil() {
+
+interface PageProps {
+  params: {
+    user: string
+  }
+}
+
+interface IUser {
+  deviceId: string,
+  username: string,
+  password: string
+}
+
+export default async function CriarPerfil({ params }: PageProps) {
+
+  const [deviceId, setDeviceId] = useState<string>();
+
+  console.log(params.user);
 
   const form = useForm<z.infer<typeof perfilSchema>>({
     resolver: zodResolver(perfilSchema),
     defaultValues: {
+      deviceId: deviceId,
       sun: 0,
       irrigation: 0,
       temp: 0,
@@ -32,17 +51,28 @@ export default function CriarPerfil() {
     }
   });
 
+  useEffect(() => {
+    const data = localStorage.getItem("users");
+    if (data) {
+      const users: IUser[] = JSON.parse(data);
+      const user = users.find((user) => user.username === params.user);
+      setDeviceId(user?.deviceId);
+    }
+  }, [])
+
   const onSubmit = (values: z.infer<typeof perfilSchema>) => {
     const client = mqtt.connect("wss://6c828d1f191045e1ae9514d4dfbee9a5.s1.eu.hivemq.cloud:8884/mqtt", {
       username: "Frontend",
       password: "Frontend123",
     });
 
+    console.log(values.deviceId);
+
     const topic = "dados";
-    
-    client.publish(topic, JSON.stringify(values));
 
     console.log(JSON.stringify(values));
+    client.publish(topic, JSON.stringify(values));
+
   }
 
   return (

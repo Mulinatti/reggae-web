@@ -2,7 +2,7 @@
 
 import Gauge from "@/src/components/gauge";
 import InfoBox from "@/src/components/info-box";
-import { env } from "@/src/env";
+import { env } from "@/env";
 import { Clock, Droplet, Flower, Info, Sprout, Sun, TriangleAlert } from "lucide-react";
 import mqtt from "mqtt"
 import Image from "next/image";
@@ -33,7 +33,6 @@ const Details = () => {
 
   console.log(details);
 
-
   return (
     <main className="p-5">
       <div className="bg-primary/10 rounded-full w-[300px] h-[300px] mx-auto flex justify-center items-center">
@@ -41,7 +40,7 @@ const Details = () => {
       </div>
       <div className="text-center">
         <h1 className="mt-5 font-bold text-2xl text-primary">Samambaia</h1>
-        <p className="text-xs text-zinc-500">1337021</p>
+        <p className="text-xs text-zinc-500">{details?.deviceId}</p>
       </div>
       <section className="flex gap-10 justify-center mt-8">
         <div>
@@ -59,10 +58,11 @@ const Details = () => {
           <Info size={20} className="stroke-primary" />
           <p className="text-zinc-700">Última irrigação 2h atrás</p>
         </div>
-        <div className="flex gap-2 justify-center animate-pulse">
+        <div hidden={!details?.max_temp_exceeded} className="flex gap-2 justify-center animate-pulse">
           <TriangleAlert size={20} className="stroke-amber-400"/>
           <p className="text-amber-500">Temperatura muito alta</p>
-        </div><div className="flex gap-2 justify-center animate-pulse">
+        </div>
+        <div hidden={!details?.is_reservatory_empty} className="flex gap-2 justify-center animate-pulse">
           <TriangleAlert size={20} className="stroke-red-400"/>
           <p className="text-red-500">Sem água no reservatório</p>
         </div>
