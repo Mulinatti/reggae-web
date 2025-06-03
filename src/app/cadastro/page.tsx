@@ -67,7 +67,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -78,7 +78,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Confirmar senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="password"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
