@@ -3,7 +3,7 @@ import { z } from "zod";
 const cadastroSchema = z
   .object({
     username: z.string(),
-    deviceId: z.string().optional(),
+    deviceId: z.string(),
     password: z.string(),
     confirmPassword: z.string(),
   })

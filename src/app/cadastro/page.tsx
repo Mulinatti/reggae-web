@@ -55,7 +55,7 @@ export default function Cadastro() {
 
             <FormField name="deviceId" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Id de dispositivo (OPCIONAL)</FormLabel>
+                <FormLabel>Id de dispositivo</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -67,7 +67,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -78,7 +78,7 @@ export default function Cadastro() {
               <FormItem>
                 <FormLabel>Confirmar senha</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

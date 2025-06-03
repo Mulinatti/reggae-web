@@ -7,7 +7,7 @@ const perfilSchema = z.object({
   min: z.coerce.number(),
   max: z.coerce.number(),
   irrigation: z.coerce.number(),
-  time: z.optional(z.date())
+  time: z.date()
 });
 
 export default perfilSchema;

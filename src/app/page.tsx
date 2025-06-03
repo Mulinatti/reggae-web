@@ -10,20 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
 import { redirect } from "next/navigation";
 import Logo from "../components/logo";
+import FormularioLogin from "../components/formulario-login";
 
 export default function Login() {
-
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      username: "",
-      password: ""
-    }
-  });
-
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    redirect("/home");
-  }
 
   return (
     <section className="p-5 flex flex-col justify-center h-screen">
@@ -31,30 +20,7 @@ export default function Login() {
         <Logo width={240} height={240} />
       </div>
       <div className="w-full h-[calc(80%-75px)] flex items-center">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1">
-            <FormField name="username" control={form.control} render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField name="password" control={form.control} render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <Button size="lg" className="w-full mt-1.5 font-semibold" type="submit">Login</Button>
-          </form>
-        </Form>
+        <FormularioLogin/>
       </div>
     </section>
   );

@@ -14,18 +14,14 @@ import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from './ui/calendar';
 import { ptBR } from 'date-fns/locale';
-
-interface IUser {
-  deviceId: string,
-  username: string,
-  password: string
-}
+import { redirect } from 'next/navigation';
+import IUser from '../app/interfaces/IUser';
 
 interface FormularioProps {
     user: string;
 }
 
-const FormularioPerfil = ({user}: FormularioProps) => {
+const FormularioPerfil = ({ user }: FormularioProps) => {
 
     const [deviceId, setDeviceId] = useState<string>();
 
@@ -58,14 +54,33 @@ const FormularioPerfil = ({user}: FormularioProps) => {
             password: "Frontend123",
         });
 
-        values.deviceId = deviceId!
         console.log(values.deviceId);
 
         const topic = "dados";
 
-        console.log(JSON.stringify(values));
-        client.publish(topic, JSON.stringify(values));
+        const formattedValues = {
+            ...values,
+            time: format(values.time, 'dd/MM/yyyy'),
+            deviceId: deviceId
+        };
 
+        console.log(JSON.stringify(formattedValues));
+        //client.publish(topic, JSON.stringify(values));
+
+        const storedPerfils = localStorage.getItem("plants");
+
+        const createdPerfil = {
+            user,
+            plantName: values.name,
+            deviceId
+        }
+
+        if (storedPerfils) {
+            localStorage.setItem("plants", JSON.stringify([createdPerfil]))
+            return redirect(`/home/${user}`)
+        }
+        localStorage.setItem("plants", JSON.stringify([createdPerfil]));
+        return redirect(`/home/${user}`)
     }
 
     return (
